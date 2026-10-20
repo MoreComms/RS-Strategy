@@ -1,0 +1,412 @@
+<title>The Rahal Show Playbook</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a long-read strategy memo; a 70s target-ring hero (from the deck cover), then one 860px reading column with full-bleed tables. */
+:root {
+  --bg: #fbf6ef;
+  --surface: #ffffff;
+  --fg: #1f1a17;
+  --muted: #6b6058;
+  --rule: #e6dccf;
+  --orange: #e4601a;
+  --lime: #6fd420;
+  --purple: #6b45c2;
+  --blue: #1557c9;
+  --red: #d9232f;
+  --lilac: #cf9be8;
+  --green-ok: #2f8a3a;
+  --amber: #b77700;
+  --red-no: #c2262f;
+  --ok-bg: #e5f4e3;
+  --amber-bg: #fbf0d6;
+  --no-bg: #fbe3e2;
+  --code-bg: #f3ebe0;
+  --display: "Shrikhand", "Cooper Black", Georgia, serif;
+  --body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17120f; --surface: #211a16; --fg: #f3ebe2; --muted: #b3a597; --rule: #3a2f28;
+    --orange: #ff7a35; --lime: #8ae646; --purple: #a585f0; --blue: #6b9bff; --red: #ff5a63; --lilac: #d9aef0;
+    --green-ok: #79d37f; --amber: #f1b84a; --red-no: #ff7d84;
+    --ok-bg: #1d3320; --amber-bg: #3a2c10; --no-bg: #3d1a1c; --code-bg: #2a211b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17120f; --surface: #211a16; --fg: #f3ebe2; --muted: #b3a597; --rule: #3a2f28;
+  --orange: #ff7a35; --lime: #8ae646; --purple: #a585f0; --blue: #6b9bff; --red: #ff5a63; --lilac: #d9aef0;
+  --green-ok: #79d37f; --amber: #f1b84a; --red-no: #ff7d84;
+  --ok-bg: #1d3320; --amber-bg: #3a2c10; --no-bg: #3d1a1c; --code-bg: #2a211b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+a { color: var(--blue); }
+a:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+
+.hero {
+  position: relative; overflow: hidden; color: #fff;
+  background: repeating-radial-gradient(circle at 50% 120%, #8a1f27 0 70px, #d9232f 70px 130px, #cf9be8 130px 190px, #1557c9 190px 270px, #e4601a 270px 360px, #6fd420 360px 450px, #5a2fc0 450px 560px);
+}
+.hero-inner {
+  max-width: 1000px; margin: 0 auto;
+  padding-block: 64px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 18px; justify-items: center; text-align: center;
+}
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; background: #1f1a17; color: #fff; padding: 6px 12px; border-radius: 999px; }
+.hero h1 { font-family: var(--display); font-weight: 400; font-size: clamp(40px, 8vw, 84px); line-height: 1.02; margin: 0; text-shadow: 0 3px 0 rgba(0,0,0,.35); text-wrap: balance; }
+.hero p.sub { margin: 0; max-width: 640px; background: rgba(31,26,23,.82); padding: 14px 18px; border-radius: 14px; font-size: 18px; line-height: 1.5; }
+
+.wrap {
+  max-width: 900px; margin: 0 auto;
+  padding-block: 40px 80px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+.toc a { font-family: var(--mono); font-size: 13px; text-decoration: none; color: var(--fg); border: 1.5px solid var(--fg); border-radius: 999px; padding: 4px 12px; }
+.toc a:hover { background: var(--fg); color: var(--bg); }
+
+.note { font-size: 14px; color: var(--muted); border-left: 3px solid var(--lilac); padding-left: 14px; margin: 0 0 32px; }
+
+section { margin-top: 64px; }
+h2 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5vw, 44px); line-height: 1.1; margin: 0 0 18px; color: var(--orange); text-wrap: balance; }
+h2 .num { font-family: var(--mono); font-size: 14px; color: var(--muted); display: block; letter-spacing: .1em; margin-bottom: 6px; }
+h3 { font-size: 21px; margin: 36px 0 10px; text-wrap: balance; }
+p, li { max-width: 68ch; }
+ul, ol { padding-left: 1.25em; }
+li { margin-bottom: 6px; }
+strong { font-weight: 700; }
+.est { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; background: var(--code-bg); color: var(--muted); padding: 1px 6px; border-radius: 4px; vertical-align: 2px; white-space: nowrap; }
+
+.thesis {
+  background: var(--surface); border: 2px solid var(--fg); border-radius: 18px;
+  padding: 26px 24px; box-shadow: 6px 6px 0 var(--purple);
+}
+.thesis .big { font-size: clamp(20px, 3vw, 26px); line-height: 1.35; font-weight: 600; margin: 0 0 18px; max-width: none; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.fact { border-top: 4px solid var(--orange); padding-top: 10px; min-width: 0; }
+.fact:nth-child(2) { border-color: var(--blue); }
+.fact:nth-child(3) { border-color: var(--lime); }
+.fact h4 { margin: 0 0 4px; font-size: 16px; }
+.fact p { margin: 0; font-size: 15px; color: var(--muted); }
+
+.table-scroll { overflow-x: auto; margin: 16px 0; border: 1.5px solid var(--rule); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 15px; line-height: 1.45; }
+th, td { text-align: left; vertical-align: top; padding: 11px 14px; border-bottom: 1px solid var(--rule); }
+th { font-family: var(--mono); font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); background: var(--code-bg); font-weight: 500; }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.total td { font-weight: 700; background: var(--code-bg); }
+
+.pill { display: inline-block; font-family: var(--mono); font-size: 12px; padding: 2px 9px; border-radius: 999px; font-weight: 500; white-space: nowrap; }
+.ok { background: var(--ok-bg); color: var(--green-ok); }
+.mid { background: var(--amber-bg); color: var(--amber); }
+.no { background: var(--no-bg); color: var(--red-no); }
+
+.layers { display: grid; gap: 10px; margin: 20px 0; }
+.layer { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 14px; background: var(--surface); border: 1.5px solid var(--rule); border-radius: 12px; padding: 12px 16px; }
+.layer b { font-family: var(--display); font-weight: 400; font-size: 26px; color: #fff; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; }
+.layer:nth-child(1) b { background: var(--red); }
+.layer:nth-child(2) b { background: var(--orange); }
+.layer:nth-child(3) b { background: var(--blue); }
+.layer:nth-child(4) b { background: var(--purple); }
+.layer:nth-child(5) b { background: #3c9a17; }
+.layer div { min-width: 0; }
+.layer h4 { margin: 0; font-size: 17px; }
+.layer p { margin: 2px 0 0; font-size: 14.5px; color: var(--muted); }
+
+.ideas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 18px; }
+.idea { background: var(--surface); border: 2px solid var(--fg); border-radius: 16px; padding: 18px; min-width: 0; }
+.idea:nth-child(1) { box-shadow: 5px 5px 0 var(--lime); }
+.idea:nth-child(2) { box-shadow: 5px 5px 0 var(--orange); }
+.idea:nth-child(3) { box-shadow: 5px 5px 0 var(--blue); }
+.idea h4 { font-family: var(--display); font-weight: 400; font-size: 22px; margin: 0 0 8px; line-height: 1.15; }
+.idea p { margin: 0; font-size: 15px; }
+
+.protocol { counter-reset: step; list-style: none; padding: 0; display: grid; gap: 12px; }
+.protocol li { counter-increment: step; position: relative; padding: 14px 16px 14px 60px; background: var(--surface); border: 1.5px solid var(--rule); border-radius: 12px; max-width: none; margin: 0; }
+.protocol li::before { content: counter(step); position: absolute; left: 14px; top: 12px; width: 32px; height: 32px; border-radius: 50%; background: var(--purple); color: #fff; font-family: var(--mono); font-weight: 500; display: grid; place-items: center; }
+
+.callout { background: var(--fg); color: var(--bg); border-radius: 16px; padding: 22px 24px; margin: 24px 0; }
+.callout p { margin: 0; max-width: none; font-size: 18px; line-height: 1.45; }
+.callout strong { color: var(--lime); }
+
+.checklist { list-style: none; padding: 0; }
+.checklist li { padding-left: 30px; position: relative; }
+.checklist li::before { content: ""; position: absolute; left: 0; top: 5px; width: 16px; height: 16px; border: 2px solid var(--fg); border-radius: 4px; }
+
+footer { margin-top: 64px; padding-top: 18px; border-top: 1.5px solid var(--rule); font-size: 13.5px; color: var(--muted); }
+@media (max-width: 520px) {
+  body { font-size: 16px; }
+  .layer { grid-template-columns: 52px 1fr; }
+  .layer b { width: 40px; height: 40px; font-size: 21px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .toc a { transition: background .15s, color .15s; }
+}
+</style>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Monetization · Partnerships · Sponsorship</span>
+    <h1>The Rahal Show Playbook</h1>
+    <p class="sub">How Miled &amp; Melissa's celebrity comedy show funds itself: brand architecture, guest-conflict rules, celebrity leverage, the 2027 calendar and a Year-1 revenue model.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <nav class="toc" aria-label="Sections">
+    <a href="#thesis">Thesis</a><a href="#position">Position</a><a href="#brand">Brand money</a><a href="#other">Other revenue</a><a href="#celebs">Celebrity guests</a><a href="#calendar">Calendar</a><a href="#model">Year-1 model</a><a href="#episode">Each episode</a><a href="#business">Business set-up</a><a href="#next">Next steps</a>
+  </nav>
+  <p class="note">Prepared 20 October 2026 from the pitch deck and four research reports (creators, market, monetization, partnerships). <span class="est">EST</span> marks our planning estimates, not reported data. Check every rate against the Rahals' own deal history and 2–3 agency quotes before it goes into a sponsor deck.</p>
+
+  <section id="thesis">
+    <h2><span class="num">01</span>The thesis</h2>
+    <div class="thesis">
+      <p class="big">Sell The Rahal Show as a branded-entertainment platform with TV-grade production. Do not sell it as an influencer channel that happens to have a long-form show.</p>
+      <div class="facts">
+        <div class="fact"><h4>YouTube ads won't fund it</h4><p>Arabic ads pay about $3.9 per 1,000 views in the UAE, $2.0 in KSA and $0.7 in Egypt. A 300K-view episode earns about $300–900 from ads <span class="est">EST</span>. Hot Ones gets only about 15% of its revenue from ads.</p></div>
+        <div class="fact"><h4>The format is a stack of sellable units</h4><p>8 segments, a set that can carry products, and 6–10 clips per episode. Each can be sold, as Fallon sold games to GE, Ford and Amazon.</p></div>
+        <div class="fact"><h4>Celebrity guests cut both ways</h4><p>Every guest arrives with exclusive brand deals and a project to promote. The strategy defuses the deals and charges for the promotion.</p></div>
+      </div>
+    </div>
+    <div class="callout"><p>Target: <strong>pre-sell at least 80% of each season's production budget before filming starts.</strong> Sponsorship and branded content will be about 70–85% of Year-1 revenue.</p></div>
+  </section>
+
+  <section id="position">
+    <h2><span class="num">02</span>Where the show sits in the market</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Advantage</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td><strong>No direct competitor</strong></td><td>No weekly, YouTube-first Arabic show mixes celebrity sketches, games and interview. Current shows are serious interviews (ABtalks, Fnjan), once-a-year Ramadan TV pranks (Ramez Galal) or sketch networks with no fixed hosts (Telfaz11).</td></tr>
+        <tr><td><strong>A married couple as hosts</strong></td><td>No major Arabic celebrity show has married hosts. Relationship comedy stays culturally safe and suits family co-viewing: 60% of UAE YouTube viewing is shared.</td></tr>
+        <tr><td><strong>Proven branded-parody skill</strong></td><td>Paramount paid for their <em>Mission: Impossible</em> parody. The show applies the same skill at greater length.</td></tr>
+        <tr><td><strong>Their own seasonal IP</strong></td><td><em>Fawazir Rahal</em> is in its 4th Ramadan season. Ramadan ad spend is projected above $2B in 2026.</td></tr>
+        <tr><td><strong>Built for TV screens</strong></td><td>YouTube on TV reaches 12M+ adults in KSA, and TV-screen advertising grew 31% in 2025. A 4K, 30–40 minute show is made for the living room.</td></tr>
+        <tr><td><strong>Pan-Arab reach</strong></td><td>More than 95% of watch time on UAE-based channels comes from outside the UAE. Lebanese hosts in Dubai with guests from the Gulf, Egypt and the Levant can reach every market.</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Gaps to close before selling:</strong> YouTube is their smallest platform (~700K subscribers) and has no long-form track record. Audience location is unknown (KSA vs UAE vs Levant). They have no confirmed celebrity network yet: Nancy, Haifa and Karen are names on a wish list, not bookings.</p>
+  </section>
+
+  <section id="brand">
+    <h2><span class="num">03</span>How the show earns: five layers of brand money</h2>
+    <div class="layers">
+      <div class="layer"><b>1</b><div><h4>Season Title Partner</h4><p>One brand, one category to itself, all season.</p></div></div>
+      <div class="layer"><b>2</b><div><h4>Segment Partners</h4><p>3–5 brands, each owning a game or segment.</p></div></div>
+      <div class="layer"><b>3</b><div><h4>Set &amp; Production Partners</h4><p>Furniture, appliances, wardrobe, beverages, paid in barter plus a fee.</p></div></div>
+      <div class="layer"><b>4</b><div><h4>Episode Partners</h4><p>The guest's own brand, the guest's project, sponsored sketches.</p></div></div>
+      <div class="layer"><b>5</b><div><h4>Seasonal Tentpoles</h4><p>Ramadan Nights, Riyadh Season, White Friday, Dubai Shopping Festival.</p></div></div>
+    </div>
+
+    <h3>Segment-to-sponsor map</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Show element</th><th>What we sell</th><th>Best-fit categories</th><th>Guest risk</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Whole show</strong></td><td>"Presented by ___" on the opening and closing cards, host-read spots, end cards on every clip, exclusive category</td><td>Food delivery and e-commerce (Talabat, Keeta, Careem, Noon, Amazon.ae), tourism boards, Chinese car brands, regional banks</td><td><span class="pill ok">Low</span></td></tr>
+        <tr><td><strong>Guest Trailer</strong></td><td>"Rahal Trailers, brought to you by ___"</td><td>Cinema chains (VOX, Muvi, Reel), streamers (Shahid, OSN+)</td><td><span class="pill mid">Check guest's platform</span></td></tr>
+        <tr><td><strong>Sketches ×3</strong></td><td>One sponsor-written sketch per episode (the Paramount model)</td><td>Any category the guest has cleared, sold sketch by sketch</td><td><span class="pill mid">Per episode</span></td></tr>
+        <tr><td><strong>The Conversation</strong></td><td>"Served by ___": coffee on the table, plus the podcast feed</td><td>Coffee chains and coffee brands</td><td><span class="pill ok">Low</span></td></tr>
+        <tr><td><strong>Blender Confessions</strong></td><td>Named game; the partner's appliance is the prop</td><td>Ninja, Philips, Kenwood, Moulinex, Sharaf DG</td><td><span class="pill ok">Low</span></td></tr>
+        <tr><td><strong>Fake Unboxing Ad</strong></td><td>The title partner delivers the box; the products are made-up or the sponsor's own</td><td>Delivery and e-commerce</td><td><span class="pill ok">Low</span></td></tr>
+        <tr><td><strong>Mean Comments</strong></td><td>Named game</td><td>Telcos (du, e&amp;, Mobily)</td><td><span class="pill mid">Egyptian stars</span></td></tr>
+        <tr><td><strong>The Roast</strong></td><td>"Roasted by ___"</td><td>Regional snack brand or a fast-food chain's spicy line (avoid PepsiCo- or Coca-Cola-owned brands when the guest has a cola tie)</td><td><span class="pill mid">Medium</span></td></tr>
+        <tr><td><strong>The 70s set</strong></td><td>"Home &amp; Set Partner": they build the set, get on-screen credit and a shoppable list</td><td>Home Centre, Pan Emirates, 2XL, IKEA, lighting brands, Samsung or LG retro TV</td><td><span class="pill ok">Low</span></td></tr>
+        <tr><td><strong>Wardrobe &amp; glam</strong></td><td>Credit only; the guest can always use their own brands instead</td><td>Namshi, Ounass, local designers, beauty retailers</td><td><span class="pill no">High for beauty</span></td></tr>
+        <tr><td><strong>Drinks on set</strong></td><td>Branded cups and bottles</td><td>Regional only (Al Ain, Almarai juices)</td><td><span class="pill no">High for colas</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Rate card anchors <span class="est">EST · check before pitching</span></h3>
+    <p>Starting point: a single Rahal Reel or TikTok is estimated at AED 30K–80K. CreatorDB estimates $17K–40K per Instagram post.</p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Package</th><th>Indicative price</th><th>What's included</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Season Title Partner</strong> (10 episodes)</td><td>AED 1.0M–1.8M</td><td>Opening and closing cards, 1 host-read per episode, logo on every clip, Fake Unboxing delivery role, 2 dedicated social posts, exclusive category, brand-lift study</td></tr>
+        <tr><td><strong>Segment Partner</strong></td><td>AED 50K–120K per episode</td><td>Named segment, product in play, 2–3 clips per episode carrying the brand. Sold in 5-episode blocks.</td></tr>
+        <tr><td><strong>Sponsored Sketch</strong></td><td>AED 120K–250K per sketch</td><td>Custom scripted sketch plus clip cuts</td></tr>
+        <tr><td><strong>Home &amp; Set Partner</strong></td><td>Set built in kind + AED 150K–300K per season</td><td>Permanent on-screen credit, "get the look" content</td></tr>
+        <tr><td><strong>Bring-Your-Brand Episode</strong></td><td>AED 150K–300K per episode</td><td>The guest's ambassador brand co-funds the episode</td></tr>
+        <tr><td><strong>Release Partner</strong></td><td>AED 75K–200K, or paid in production or promotion</td><td>The studio, label or platform behind the guest's new project</td></tr>
+        <tr><td><strong>Ramadan Nights Presenting Partner</strong></td><td>AED 1.5M–2.5M</td><td>4 long-form celebrity specials plus <em>Fawazir Rahal</em> S5 daily</td></tr>
+        <tr><td><strong>Add-ons</strong></td><td>+20–25% per 30 days (paid use) · +15–30% (exclusive category)</td><td>Whitelisting (brand runs our content as paid ads), exclusive category, bonuses when clips beat view targets. Usage rights are never free.</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Sell bundles, not single slots.</strong> Every package includes the long episode plus clips on Shorts, TikTok, Reels and Snapchat. Snapchat reaches more than 90% of Saudis aged 13–34. The long episode is what makes that reach premium and safe for TV-style advertisers.</p>
+
+    <h3>Three ideas that set the show apart</h3>
+    <div class="ideas">
+      <div class="idea"><h4>Rahal Mart</h4><p>A made-up brand universe for Fake Unboxing and the sketches. UAE trademark law has no parody defence, so invented products avoid legal risk and can't clash with a guest's deals. They become recurring jokes and, later, real merch.</p></div>
+      <div class="idea"><h4>Roast My Brand</h4><p>A premium paid segment: a brand pays to be roasted by the guest and hosts. The brand consents in writing, so legal risk is low. Self-mocking brand marketing performs well. Priced above a sponsored sketch.</p></div>
+      <div class="idea"><h4>Props into products</h4><p>Blender Confessions becomes a co-branded "Confession Blender" or smoothie line with the appliance partner, with a licensing royalty to the show. Hot Ones did this with its Last Dab sauce.</p></div>
+    </div>
+  </section>
+
+  <section id="other">
+    <h2><span class="num">04</span>Other revenue</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Stream</th><th>How</th><th>When</th><th>Year-1 weight</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Rahal Studio</strong></td><td>Rent out the writers, crew and set between shoots to make branded skits, with or without the Rahals on camera. Fixed costs become margin, and output is no longer limited by the hosts' time.</td><td>From S1</td><td>Medium</td></tr>
+        <tr><td><strong>Government &amp; tourism co-funding</strong></td><td>Creators HQ (AED 150M fund, Golden Visa), DET and Visit Dubai, Riyadh Season / GEA (the MrBeast precedent). Check Abu Dhabi's 35–50% production cashback against Dubai Studio City.</td><td>Apply now</td><td>Medium</td></tr>
+        <tr><td><strong>Licensing &amp; second windows</strong></td><td>Non-exclusive best-of licence to Shahid (~4.4M subscribers, has a creator programme) or OSN+. The Conversation as a podcast on Anghami or Spotify. Netflix non-exclusive after ~20 episodes. Never sell the IP.</td><td>End of Y1</td><td>Small, growing</td></tr>
+        <tr><td><strong>Format licensing</strong></td><td>Write the format bible from day one so the show can be licensed to Turkey, the Maghreb or South Asia later. A German Hot Ones launched on YouTube in 2025.</td><td>Year 2+</td><td>Long-term value</td></tr>
+        <tr><td><strong>The Rahal Show LIVE</strong></td><td>One annual live taping at Riyadh Season, Coca-Cola Arena or Beirut in summer. The event pays a fee plus a share of tickets, and the taping becomes a free episode.</td><td>Q4 2027</td><td>Medium</td></tr>
+        <tr><td><strong>YouTube's own revenue</strong></td><td>Ads with mid-rolls; Thursday Premieres; memberships (bloopers, a vote on the next guest, a lottery for studio-audience seats); English and French AI dubbing; YouTube's Creator Partnerships Hub.</td><td>Launch</td><td>Small</td></tr>
+        <tr><td><strong>Merch &amp; products</strong></td><td>Limited drops tied to episodes through the Amazon Creators Foundry, then a licensed product. Not a self-funded consumer brand.</td><td>After S1</td><td>Small</td></tr>
+        <tr><td><strong>Affiliate</strong></td><td>Amazon.ae and Noon links in Fake Unboxing. Prepare for TikTok Shop KSA (reportedly Q1 2027) but don't budget for it.</td><td>Opportunistic</td><td>Very small</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="celebs">
+    <h2><span class="num">05</span>Celebrity guests: protecting sponsors and earning from guests</h2>
+    <p>Each episode places one celebrity at the centre of a room full of brands. Ambassador contracts usually include <strong>category exclusivity</strong>, limits on appearing next to competitors, and <strong>morals clauses</strong>. If a guest breaches them, the guest's agent bears the cost. In practice the agent vetoes the booking or demands sponsor assets be removed, so the show carries the risk.</p>
+
+    <h3>Where the clashes are</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Category</th><th>Clashes with</th><th>Rule</th></tr></thead>
+      <tbody>
+        <tr><td>Soft drinks</td><td>Pepsi: Amr Diab (2026 World Cup ad), Mo Salah, Elissa (unconfirmed). Coca-Cola: Nancy Ajram (long-time face). Plus boycott sentiment against both.</td><td><span class="pill no">Never a season sponsor</span></td></tr>
+        <tr><td>Jewellery</td><td>Nancy (Tiffany, Damas), Myriam Fares (L'azurde), Nadine Njeim (MARLI), Balqees (Piaget)</td><td><span class="pill no">Never a season sponsor</span></td></tr>
+        <tr><td>Smartphones</td><td>Amr Diab (OPPO), Mo Salah (OPPO, reported)</td><td><span class="pill no">Never a season sponsor</span></td></tr>
+        <tr><td>Telcos</td><td>Ahmed Saad (Zain, Orange), Ahmed Helmy (Etisalat Misr), Mo Salah (Vodafone)</td><td><span class="pill mid">Segment only, with an exception per clashing episode</span></td></tr>
+        <tr><td>Beauty &amp; fragrance</td><td>Balqees (Guerlain), Karen Wazen (fragrance history, her own eyewear brand)</td><td><span class="pill mid">Segment only, with an exception per clashing episode</span></td></tr>
+        <tr><td>Real estate</td><td>Amr Diab (One Development)</td><td><span class="pill mid">Medium</span></td></tr>
+        <tr><td>Music streaming</td><td>Haifa Wehbe (Spotify EQUAL ambassador)</td><td><span class="pill mid">Watch the Anghami podcast deal</span></td></tr>
+        <tr><td>Delivery, appliances, home, coffee, tourism, Chinese cars, regional banks</td><td>No conflicts found</td><td><span class="pill ok">Season-level categories</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>How the show handles it: the clean-room protocol</h3>
+    <ol class="protocol">
+      <li><strong>Get each guest's conflicts in writing before choosing sponsors.</strong> Every booking includes a Category Clearance Form: the guest lists their exclusive categories and confirms the list is accurate, so liability sits with the guest. No public endorsement list is fully up to date.</li>
+      <li><strong>Sponsors attach to segments, not to the guest.</strong> Host-read spots are done by Miled and Melissa only, as Fallon does. This also avoids needing a UAE Advertiser Permit or Saudi Mawthooq licence for the guest.</li>
+      <li><strong>Make two cuts of every clip.</strong> One version carries sponsor branding for the Rahal channels. A clean version without branding goes to the guest for their collab post. The guest's audience spreads the show without breaking their contracts.</li>
+      <li><strong>Keep a swap kit.</strong> Every branded prop has an unbranded twin (blender, mugs, drinks, TV), so a clash takes about 10 minutes to fix.</li>
+      <li><strong>Own the props.</strong> Rahal Mart products and show-branded cups mean the core set has no third-party products to clash with. This is the Hot Ones lesson.</li>
+      <li><strong>Write the sponsor contracts for this.</strong> Include an episode exception clause, a make-good when it's used, 2 weeks' notice of each guest with no sponsor approval over guests, and a kill switch so a sponsor can pull out of one episode if the guest is caught in a scandal before it airs. Keep one reserve episode ready.</li>
+    </ol>
+
+    <h3>Earning from guests</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Lever</th><th>How it works</th><th>Who pays</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Release Partner</strong></td><td>Book guests around their promotion calendar (a new series, album, film or concert). The studio, label or platform pays a fee or covers production or promotion. This is the Wired Autocomplete press-junket model.</td><td>Shahid/MBC, OSN+, Netflix MENA, Rotana, Universal Arabic Music, Platinum Records, promoters</td></tr>
+        <tr><td><strong>Bring-Your-Brand episode</strong></td><td>The guest's ambassador brand co-funds that episode: Tiffany for Nancy, OPPO for Amr Diab, Spotify for Haifa, Karen Wazen Collection for Karen. In Fake Unboxing, the guest "sells" their own brand's product badly, and the brand is in on the joke.</td><td>The guest's brand</td></tr>
+        <tr><td><strong>Guest reach</strong></td><td>The contract requires one collab post (the clean cut) plus 2–3 Stories. Sponsors pay a performance bonus tied to the guest's added reach.</td><td>Built into sponsor pricing</td></tr>
+        <tr><td><strong>Saudi guests open Saudi budgets</strong></td><td>KSA is the largest ad market (~$4.2B). One or two Saudi stars per season (e.g. Ibrahim Al-Hajjaj, Nasser Al Qasabi) make it easier to sell to stc, SNB, Visit Saudi and Saudi food and drink brands.</td><td>KSA sponsors</td></tr>
+        <tr><td><strong>The guest's cause</strong></td><td>The guest picks a charity. During Ramadan, a sponsor donates per view. This draws on CSR and Ramadan giving budgets, a separate pool of money at banks and telcos.</td><td>Bank and telco CSR</td></tr>
+        <tr><td><strong>Introducing guests to sponsors</strong></td><td>If a show sponsor wants to sign the guest for its own campaign, the show arranges it for a commission. Separate contract, separate fee, guest consent.</td><td>Sponsor (commission)</td></tr>
+        <tr><td><strong>Taping access</strong></td><td>Season partners get studio-audience seats and a meet-and-greet, only where the guest agrees.</td><td>In title package</td></tr>
+      </tbody>
+    </table></div>
+
+    <h3>Guest tiers and season casting</h3>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Tier</th><th>Who</th><th>Role in season</th><th>Cost &amp; risk</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1 · Headliners</strong></td><td>Nancy Ajram, Haifa Wehbe, Elissa, Amr Diab, Assala</td><td>2–3 per season: premiere, mid-season, finale</td><td>Appearance fee likely; heaviest conflict checks</td></tr>
+        <tr><td><strong>2 · Stars of the moment</strong></td><td>Leads of the current Ramadan series, comedians, Saudi stars</td><td>4–5 per season; natural Release Partner bookings</td><td>Moderate; often promoter-funded</td></tr>
+        <tr><td><strong>3 · Internet royalty</strong></td><td>Top regional creators, athletes</td><td>2–3 per season; high clip virality</td><td>Low fee; collab reach</td></tr>
+      </tbody>
+    </table></div>
+    <p><strong>Season 1 casting rule:</strong> confirm one Tier-1 headliner for the premiere before selling the title partner. Shoot the pilot with a Tier-2 or Tier-3 guest first. Mix guests across the Levant, Egypt and the Gulf, with at least two Saudi guests per season. No public MENA benchmark exists for appearance fees, so set a fee range for each tier with talent managers. Bring-Your-Brand and Release Partners should cover all or most of it.</p>
+
+    <h3>Keeping the comedy legal and brand-safe</h3>
+    <p>UAE law treats online insult as a criminal matter (Cybercrime Law Art. 43: prison and/or AED 250K–500K fines, and truth is not a reliable defence). Media Council standards allow fines up to AED 1M. No sponsor will stay attached to an episode that makes the news for the wrong reasons.</p>
+    <ul>
+      <li><strong>The Roast and Mean Comments:</strong> the guest signs off in writing on a topic list and a list of off-limits topics. Only the consenting guest is roasted. Never name a third party. Real commenters are anonymised. No comments about religion, nationality, ethnicity, family, or appearance combined with sexuality.</li>
+      <li><strong>Guest Trailer:</strong> only "scandals" the guest has acknowledged publicly and approves. Never allege wrongdoing. An AI-generated likeness of a public figure needs prior approval from the National Media Authority.</li>
+      <li><strong>No-go topics:</strong> religion; rulers, royals and states; politics (Hicham Haddad was prosecuted in 2018 over a joke about Mohammed bin Salman); mocking whole nationalities or dialects.</li>
+      <li><strong>Categories the show never accepts:</strong> alcohol, gambling, crypto, unlicensed health or weight-loss products, and boycott-exposed brands at title level.</li>
+      <li><strong>Ramadan edit:</strong> softer tone and sponsor categories suited to families.</li>
+      <li><strong>Licences:</strong> UAE Advertiser Permit for the production company and both hosts (mandatory since about February 2026). Saudi Mawthooq (~SAR 15K for 3 years, through a licensed agency for non-Saudis) for any sponsor content aimed at KSA.</li>
+      <li><strong>Process:</strong> a written brand-safety checklist based on the 20 UAE content standards and a legal read of every episode. Present it to sponsors as a feature.</li>
+    </ul>
+  </section>
+
+  <section id="calendar">
+    <h2><span class="num">06</span>The calendar: the money follows the seasons</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Window</th><th>What happens</th><th>Commercial objective</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Now to 15 Nov 2026</strong></td><td>Data pack, permits and Mawthooq route, legal templates, trademark filings, format bible, sizzle or pilot shoot, rate card checked with ITP Live and 2–3 media agencies, Creators HQ application</td><td>Sales-ready</td></tr>
+        <tr><td><strong>15 Nov to mid-Dec 2026</strong></td><td>Sales sprint. Ramadan budgets are locked in Q4.</td><td>Close the Ramadan Nights presenting partner and the Season 1 title partner</td></tr>
+        <tr><td><strong>8–10 Jan 2027</strong></td><td>1 Billion Followers Summit, Dubai</td><td>Announce the show and its partners</td></tr>
+        <tr><td><strong>Jan 2027</strong></td><td>2–3 launch episodes from a bank of pre-shot episodes</td><td>Long-form proof and data</td></tr>
+        <tr><td><strong>~7 Feb to ~8 Mar 2027</strong><br><span class="est">Ramadan, est.</span></td><td>Ramadan Nights: <em>Fawazir Rahal</em> S5 daily plus 4 long-form specials with that Ramadan's series stars; release after iftar</td><td>Biggest single package of the year</td></tr>
+        <tr><td><strong>Apr to Jun 2027</strong></td><td>Season 1: 10 weekly episodes after Eid, filmed 2 per shoot week</td><td>Title, segment, set and episode partners</td></tr>
+        <tr><td><strong>Jul to Aug 2027</strong></td><td>Summer. Rahal Studio work, dubbed library, licensing talks, live-show preparation.</td><td>Revenue that doesn't depend on new episodes</td></tr>
+        <tr><td><strong>Oct to Dec 2027</strong></td><td>Season 2 alongside Riyadh Season, White Friday and DSF; Rahal Show LIVE taping</td><td>Q4 e-commerce budgets, GEA partnership</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section id="model">
+    <h2><span class="num">07</span>Illustrative Year-1 revenue (2027)</h2>
+    <p>Assumes Ramadan Nights plus two 10-episode seasons. AED. <span class="est">EST · planning figures, not a forecast</span></p>
+    <div class="table-scroll"><table>
+      <thead><tr><th>Stream</th><th class="num">Conservative</th><th class="num">Base</th><th class="num">Stretch</th><th>Base assumption</th></tr></thead>
+      <tbody>
+        <tr><td>Title partners</td><td class="num">1.0M</td><td class="num">2.4M</td><td class="num">3.6M</td><td>2 seasons × AED 1.2M</td></tr>
+        <tr><td>Segment partners</td><td class="num">0.8M</td><td class="num">2.1M</td><td class="num">3.5M</td><td>3 segments, sold for half the episodes, at AED 70K</td></tr>
+        <tr><td>Ramadan Nights</td><td class="num">0</td><td class="num">1.5M</td><td class="num">2.5M</td><td>One presenting partner</td></tr>
+        <tr><td>Sponsored sketches &amp; Roast My Brand</td><td class="num">0.2M</td><td class="num">0.9M</td><td class="num">1.8M</td><td>~6 at ~AED 150K</td></tr>
+        <tr><td>Bring-Your-Brand &amp; Release Partners</td><td class="num">0.3M</td><td class="num">0.9M</td><td class="num">1.8M</td><td>~6 episodes at ~AED 150K</td></tr>
+        <tr><td>Home, set &amp; production partners</td><td class="num">0.15M</td><td class="num">0.3M</td><td class="num">0.5M</td><td>Plus set built in kind</td></tr>
+        <tr><td>Rahal Studio</td><td class="num">0.3M</td><td class="num">0.8M</td><td class="num">1.5M</td><td>Branded projects between shoots</td></tr>
+        <tr><td>Government co-funding &amp; Live</td><td class="num">0</td><td class="num">0.5M</td><td class="num">1.2M</td><td>Creators HQ, DET or GEA special, 1 taping</td></tr>
+        <tr><td>Licensing (second window)</td><td class="num">0</td><td class="num">0.2M</td><td class="num">0.6M</td><td>Shahid or OSN+ best-of</td></tr>
+        <tr><td>YouTube ads, memberships, merch, affiliate</td><td class="num">0.05M</td><td class="num">0.15M</td><td class="num">0.45M</td><td>Ads ≈ 20 episodes × 300K views × ~$1.5 per 1,000 views ≈ AED 33K</td></tr>
+        <tr class="total"><td>Total</td><td class="num">~2.8M</td><td class="num">~9.8M</td><td class="num">~17.5M</td><td></td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><p>YouTube ads, memberships and merch are about <strong>1–2%</strong> of the base case. Sponsorship across the 8 segments, Ramadan and guest-linked partners make up about <strong>80%</strong>. The commercial team matters more than the algorithm.</p></div>
+  </section>
+
+  <section id="episode">
+    <h2><span class="num">08</span>Getting the most out of each episode</h2>
+    <ul>
+      <li><strong>Home:</strong> long-form lives on the already-monetized @therahal channel with a "The Rahal Show" playlist and podcast. A new channel would start from zero.</li>
+      <li><strong>Release time:</strong> Thursday 9pm KSA as a Premiere; after iftar during Ramadan.</li>
+      <li><strong>One episode produces:</strong> the long-form episode; 6–10 vertical clips across Shorts, TikTok, Reels and Snapchat; a clean collab clip for the guest; The Conversation as a podcast (Anghami, Spotify, Apple); English and French AI-dubbed tracks with human-checked subtitles for punchlines; Rahal Mart and sponsor clips for paid amplification.</li>
+      <li><strong>Sponsor reporting:</strong> a live report for each partner with engaged views, long-form watch time, audience by country, YouTube Brand Lift, and promo-code and tracking-link sales.</li>
+    </ul>
+  </section>
+
+  <section id="business">
+    <h2><span class="num">09</span>Business set-up</h2>
+    <ul>
+      <li><strong>A separate company owns the IP.</strong> The show, format bible, segment names and Rahal Mart sit in a dedicated company, with trademarks registered in the UAE and KSA. Never give a sponsor or platform ownership of the format. Format IP is what made First We Feast worth $82.5M.</li>
+      <li><strong>Decide who sells.</strong> The Rahals run their own agency. Agree whether inventory is sold in-house, by an appointed agency, or by a regional sales house (SRMG Media Solutions, ITP Live), possibly with a minimum guarantee.</li>
+      <li><strong>Reduce dependence on the couple.</strong> A writers' room, recurring characters, owned games and the Trailer franchise, plus clear contracts between the hosts, the company and the IP.</li>
+      <li><strong>Respect the Rahals' values.</strong> Their public "trust first" product filter and their rule of keeping the children off camera mean one curated brand per category per season, and no integration that needs the children.</li>
+    </ul>
+  </section>
+
+  <section id="next">
+    <h2><span class="num">10</span>Decisions and data needed now</h2>
+    <ul class="checklist">
+      <li>YouTube Studio export (audience by country, revenue per 1,000 views, long-form retention) plus Instagram and TikTok audience reports</li>
+      <li>Past deal fees, to anchor the rate card</li>
+      <li>Production budget per episode and per season, to set the 80% pre-sale target</li>
+      <li>Guest pipeline: which Tier-1 names have actually been approached?</li>
+      <li>Who sells: in-house, MoreComms, or a sales house</li>
+      <li>Studio: Dubai, or Abu Dhabi for the 35–50% cashback (check eligibility)</li>
+      <li>Commit to Ramadan Nights 2027. Sales must close by mid-December.</li>
+    </ul>
+  </section>
+
+  <footer>
+    Sources: four research reports covering the creators, the MENA market, monetization models, and partnerships and guest conflicts, each with source URLs inline. Some sources could only be read from search summaries. Check key figures at the original source before quoting them externally.
+  </footer>
+</main>
